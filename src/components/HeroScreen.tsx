@@ -3,10 +3,9 @@ import { ArrowRight, ShieldCheck, Factory, Ruler, Clock, ChevronRight } from 'lu
 
 interface HeroScreenProps {
   onOpenQuoteModal: () => void;
-  onOpenGitHubGuide: () => void;
 }
 
-export const HeroScreen: React.FC<HeroScreenProps> = ({ onOpenQuoteModal, onOpenGitHubGuide }) => {
+export const HeroScreen: React.FC<HeroScreenProps> = ({ onOpenQuoteModal }) => {
   const [activeSlide, setActiveSlide] = useState(0);
 
   const heroSlides = [

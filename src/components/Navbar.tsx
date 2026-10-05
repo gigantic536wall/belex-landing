@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { Phone, FileCode2, Menu, X, ArrowRight } from 'lucide-react';
+import { Phone, Menu, X, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface NavbarProps {
-  onOpenGitHubGuide: () => void;
   onOpenQuoteModal: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenGitHubGuide, onOpenQuoteModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenQuoteModal }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/90 backdrop-blur-md transition-all">
-      {/* Top micro banner with quick contact & GitHub Pages notice */}
+      {/* Top micro banner with quick contact & factory status */}
       <div className="hidden lg:block border-b border-slate-800/80 bg-slate-900/60 px-6 py-1.5 text-xs text-slate-400">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center gap-4">
@@ -26,14 +25,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGitHubGuide, onOpenQuoteMo
           </div>
 
           <div className="flex items-center gap-5">
-            <button
-              onClick={onOpenGitHubGuide}
-              className="group flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-medium transition-colors cursor-pointer"
-            >
-              <FileCode2 className="h-3.5 w-3.5" />
-              <span>Инструкция по публикации на GitHub Pages</span>
-              <span className="rounded bg-amber-400/10 px-1 py-0.2 text-[10px] text-amber-300 font-mono">Guide</span>
-            </button>
+            <span className="flex items-center gap-1 text-slate-400">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+              <span>ТУ BY 291244837.001-2019</span>
+            </span>
             <span className="text-slate-600">/</span>
             <a
               href="tel:+375296345964"
@@ -55,7 +50,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGitHubGuide, onOpenQuoteMo
             alt="БЕЛЭКС — Завод ПВХ шпунта"
             className="h-9 sm:h-10 w-auto object-contain brightness-110"
             onError={(e) => {
-              // fallback if logo fails
               (e.currentTarget as HTMLElement).style.display = 'none';
             }}
           />
@@ -69,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGitHubGuide, onOpenQuoteMo
           </div>
         </a>
 
-        {/* Zone 2: Navigation Links (4-6 links, clean typography with hover) */}
+        {/* Zone 2: Navigation Links (clean typography with hover) */}
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
           <a href="#screen-1" className="hover:text-amber-400 transition-colors">
             1. Главная
@@ -87,13 +81,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGitHubGuide, onOpenQuoteMo
 
         {/* Zone 3: Primary Actions */}
         <div className="flex items-center gap-3">
-          <button
-            onClick={onOpenGitHubGuide}
-            className="hidden sm:inline-flex md:hidden lg:inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-lg transition-colors cursor-pointer"
+          <a
+            href="tel:+375296345964"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-lg transition-colors"
           >
-            <FileCode2 className="h-3.5 w-3.5 text-amber-400" />
-            <span className="whitespace-nowrap">GitHub Pages</span>
-          </button>
+            <Phone className="h-3.5 w-3.5 text-amber-400" />
+            <span>+375 29 634-59-64</span>
+          </a>
 
           <button
             onClick={onOpenQuoteModal}
@@ -146,16 +140,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenGitHubGuide, onOpenQuoteMo
             Экран 4: Лид-магнит, контакты и реквизиты
           </a>
           <div className="pt-2 border-t border-slate-800 flex flex-col gap-2">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenGitHubGuide();
-              }}
-              className="flex items-center justify-center gap-2 py-2 px-3 text-xs font-medium text-amber-400 bg-slate-900 border border-slate-800 rounded-lg"
-            >
-              <FileCode2 className="h-4 w-4" />
-              Инструкция: Запуск на GitHub Pages
-            </button>
             <a
               href="tel:+375296345964"
               className="flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold text-slate-200 bg-slate-900 rounded-lg"

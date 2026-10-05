@@ -1,11 +1,7 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Send, MessageSquare, Shield, FileText } from 'lucide-react';
 
-interface FooterProps {
-  onOpenGitHubGuide: () => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onOpenGitHubGuide }) => {
+export const Footer: React.FC = () => {
   return (
     <footer className="bg-slate-950 text-slate-400 border-t border-slate-850 pt-16 pb-12 text-xs">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -112,14 +108,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenGitHubGuide }) => {
               <div>ТУ BY 291244837.001-2019</div>
               <div className="pt-2 text-slate-500">
                 Республика Беларусь, 225710, Брестская обл., Пинский район
-              </div>
-              <div className="pt-2">
-                <button
-                  onClick={onOpenGitHubGuide}
-                  className="text-amber-400 hover:underline inline-flex items-center gap-1 cursor-pointer font-medium"
-                >
-                  Как разместить на GitHub Pages →
-                </button>
               </div>
             </div>
           </div>
