@@ -1,5 +1,21 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, Download, Send, CheckCircle2, MessageCircle, ArrowRight, ShieldAlert, Sparkles } from 'lucide-react';
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Download,
+  Send,
+  CheckCircle2,
+  MessageCircle,
+  ArrowRight,
+  ShieldAlert,
+  Sparkles,
+  ClipboardCheck,
+  Eye,
+  FileSpreadsheet,
+  CheckSquare
+} from 'lucide-react';
 
 interface ContactScreenProps {
   onOpenQuoteModal: () => void;
@@ -11,6 +27,7 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onOpenQuoteModal }
   const [leadPhone, setLeadPhone] = useState('');
   const [leadSubmitted, setLeadSubmitted] = useState(false);
   const [leadLoading, setLeadLoading] = useState(false);
+  const [showChecklistModal, setShowChecklistModal] = useState(false);
 
   // Quick Direct Contact Form State
   const [contactName, setContactName] = useState('');
@@ -18,6 +35,66 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onOpenQuoteModal }
   const [contactMessage, setContactMessage] = useState('');
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [contactLoading, setContactLoading] = useState(false);
+
+  // Checklist table data
+  const checklistItems = [
+    {
+      id: 1,
+      stage: '1. Анализ грунтов',
+      parameter: 'Категория грунта и гранулометрический состав',
+      criteria: 'Песок, супесь, суглинок, ил. Отсутствие сплошных скальных пластов и валунов >100 мм.',
+      risk: 'Риск повреждения замка при наезде на крупный валун',
+      solution: 'При плотных грунтах применить предварительное гидроподмывание или лидерное бурение.'
+    },
+    {
+      id: 2,
+      stage: '2. Гидрология',
+      parameter: 'Перепад уровня воды и отметка паводка',
+      criteria: 'Учет сезонного паводка (1 раз в 25 лет) и толщины ледового покрова зимой.',
+      risk: 'Перелив воды через оголовок, вымывание грунта из-за стенки',
+      solution: 'Запас высоты шпунта БЕЛЭКС +0.5 м над наивысшим горизонтом паводка.'
+    },
+    {
+      id: 3,
+      stage: '3. Нагрузки',
+      parameter: 'Высота свободной консоли стенки (H)',
+      criteria: 'H до 1.5 м — безанкерная консоль. H от 1.8 до 5.0 м — требуется расчет анкеровки.',
+      risk: 'Опрокидывание стенки под давлением влажного грунта',
+      solution: 'Установка шапочного бруса и анкерных тяг с шагом 1.5–2.0 м.'
+    },
+    {
+      id: 4,
+      stage: '4. Подбор профиля',
+      parameter: 'Момент сопротивления сечения W (см³/м)',
+      criteria: 'W от 140 см³/м (ГШ-300) до 520 см³/м (FSP SPU 500) в зависимости от статического расчета.',
+      risk: 'Избыточный прогиб стенки при неправильном расчете',
+      solution: 'Использование шпунта ГШ-500 или FSP SPU с заводской гарантией жесткости.'
+    },
+    {
+      id: 5,
+      stage: '5. Техника монтажа',
+      parameter: 'Масса и частота вибропогружателя',
+      criteria: 'Легкий экскаватор 8–18 тонн с навесным вибропогружателем или направляющей рамой.',
+      risk: 'Применение тяжелого дизель-молота приведет к деформации пластика',
+      solution: 'Мягкое вибропогружение с использованием специального наголовника БЕЛЭКС.'
+    },
+    {
+      id: 6,
+      stage: '6. Герметизация',
+      parameter: 'Требования к водонепроницаемости замка',
+      criteria: 'Замок SPU обеспечивает плотное механическое сопряжение. Для питьевых зон — без битума.',
+      risk: 'Суффозия мелких фракций песка через швы',
+      solution: 'Заводской самозапирающийся замок БЕЛЭКС или герметик-расширитель при напоре.'
+    },
+    {
+      id: 7,
+      stage: '7. Экспертиза',
+      parameter: 'Нормативная база и сертификация',
+      criteria: 'Наличие ТУ Республики Беларусь, протоколов разрывных нагрузок и паспорта партии.',
+      risk: 'Отказ государственной строительной экспертизы РБ/РФ',
+      solution: 'Полный пакет документов завода БЕЛЭКС: ТУ BY 291244837.001-2019.'
+    }
+  ];
 
   const handleLeadMagnetSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +124,7 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onOpenQuoteModal }
           <div className="flex items-center gap-2">
             <span className="font-mono text-amber-400">Экран 4</span>
             <span>·</span>
-            <span className="text-slate-400">Четвёртый экран: Лид-магнит, Блок контактов, Повтор CTA</span>
+            <span className="text-slate-400">Четвёртый экран: Лид-магнит (Чек-лист инженера), Контакты, CTA</span>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-slate-400">Прямая связь с заводом</span>
@@ -56,38 +133,51 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onOpenQuoteModal }
           </div>
         </div>
 
-        {/* 1. ЛИД-МАГНИТ (Обязательно по ТЗ: Четвёртый экран) */}
+        {/* 1. ЛИД-МАГНИТ: ЧЕК-ЛИСТ (Обязательно по ТЗ: Раздел 4) */}
         <div className="mb-20 overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950/20 p-8 sm:p-12 shadow-2xl relative">
           <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
 
           <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7 space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xs font-semibold">
-                <Sparkles className="h-3.5 w-3.5" />
-                <span>Лид-магнит для проектировщиков и строителей</span>
+                <ClipboardCheck className="h-3.5 w-3.5" />
+                <span>Формат: Чек-лист инженера + Скидка 7%</span>
               </div>
 
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                Скачайте «Альбом типовых узлов и решений монтажа шпунта ПВХ» + Скидка 7%
+                Чек-лист: 7 обязательных критериев проверки объекта перед монтажом шпунта ПВХ
               </h2>
 
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                Включает 18 готовых чертежей DWG/AutoCAD и PDF: схемы анкеровки, монтажные замковые узлы, стыковку с железобетонными оголовками и расчет гидростатического давления.
+                Пошаговая таблица самопроверки для главных инженеров, проектировщиков и прорабов: как исключить ошибки в геологии, правильно подобрать профиль и не переплатить до 40% на строительных работах.
               </p>
 
+              {/* Bullet advantages */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-300 pt-2">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                  <span>Чертежи DWG + PDF</span>
+                  <span>Таблица 7 критериев</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                  <span>Таблицы прочности</span>
+                  <span>Формат PDF + DWG узлы</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                  <span>Купон на скидку 7%</span>
+                  <span>Скидка 7% на первый заказ</span>
                 </div>
+              </div>
+
+              {/* Quick Preview Button */}
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowChecklistModal(true)}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-amber-300 bg-slate-900/90 hover:bg-slate-800 border border-amber-400/40 rounded-xl transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
+                >
+                  <Eye className="h-4 w-4 text-amber-400" />
+                  <span>Открыть интерактивную таблицу чек-листа</span>
+                </button>
               </div>
             </div>
 
@@ -95,9 +185,14 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onOpenQuoteModal }
             <div className="lg:col-span-5 p-6 sm:p-7 rounded-2xl border border-slate-700/80 bg-slate-900/90 shadow-xl backdrop-blur-sm">
               {!leadSubmitted ? (
                 <form onSubmit={handleLeadMagnetSubmit} className="space-y-4">
-                  <h3 className="text-base font-bold text-white mb-2">
-                    Получить материалы на почту или мессенджер
-                  </h3>
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h3 className="text-base font-bold text-white">
+                      Получить чек-лист в PDF
+                    </h3>
+                    <span className="text-[10px] font-mono text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded">
+                      Бесплатно
+                    </span>
+                  </div>
 
                   <div>
                     <label className="block text-xs font-medium text-slate-300 mb-1">
@@ -133,11 +228,11 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onOpenQuoteModal }
                     className="w-full py-3 px-4 text-xs sm:text-sm font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 active:scale-98 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer disabled:opacity-50"
                   >
                     {leadLoading ? (
-                      <span>Формирование альбома...</span>
+                      <span>Формирование файла...</span>
                     ) : (
                       <>
                         <Download className="h-4 w-4" />
-                        <span>Скачать альбом решений и получить 7%</span>
+                        <span>Скачать чек-лист и промокод 7%</span>
                       </>
                     )}
                   </button>
@@ -151,20 +246,69 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onOpenQuoteModal }
                   <div className="inline-flex p-3 rounded-full bg-emerald-500/20 text-emerald-400 mb-1">
                     <CheckCircle2 className="h-8 w-8" />
                   </div>
-                  <h4 className="text-lg font-bold text-white">Материалы успешно отправлены!</h4>
+                  <h4 className="text-lg font-bold text-white">Чек-лист успешно отправлен!</h4>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Ссылка на скачивание «Альбома типовых решений БЕЛЭКС (DWG+PDF)» и ваш индивидуальный промокод <strong className="text-amber-400 font-mono">BELEX-2026-7</strong> отправлены на указанные контакты.
+                    «Чек-лист проверки гидротехнического объекта (PDF)» и ваш промокод на скидку 7% <strong className="text-amber-400 font-mono">BELEX-2026-7</strong> отправлены на ваш Email и телефон.
                   </p>
-                  <a
-                    href="./images/hero_slide_1.jpg"
-                    download="Belex_Sheet_Piling_Specs.pdf"
+                  <button
+                    onClick={() => setShowChecklistModal(true)}
                     className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors cursor-pointer"
                   >
-                    <Download className="h-3.5 w-3.5 text-amber-400" />
-                    <span>Скачать файл напрямую (PDF)</span>
-                  </a>
+                    <Eye className="h-3.5 w-3.5 text-amber-400" />
+                    <span>Посмотреть чек-лист онлайн</span>
+                  </button>
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* Inline Preview Table of the Checklist */}
+          <div className="mt-12 pt-8 border-t border-slate-800/80">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <FileSpreadsheet className="h-4 w-4 text-amber-400" />
+                <h4 className="text-sm font-bold text-white">
+                  Таблица чек-листа: структура проверки перед началом работ
+                </h4>
+              </div>
+              <span className="text-[11px] text-slate-400 font-mono">
+                7 контрольных точек
+              </span>
+            </div>
+
+            <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/70">
+              <table className="w-full text-left text-xs text-slate-300 divide-y divide-slate-800">
+                <thead className="bg-slate-900/80 text-[11px] uppercase tracking-wider text-slate-400 font-mono">
+                  <tr>
+                    <th className="py-3 px-4 w-12 text-center">№</th>
+                    <th className="py-3 px-4">Параметр контроля</th>
+                    <th className="py-3 px-4">Критерий нормы</th>
+                    <th className="py-3 px-4">Риск ошибки</th>
+                    <th className="py-3 px-4">Решение БЕЛЭКС</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 font-sans">
+                  {checklistItems.map((item) => (
+                    <tr key={item.id} className="hover:bg-slate-900/40 transition-colors">
+                      <td className="py-3 px-4 text-center font-mono text-amber-400 font-bold">
+                        {item.id}
+                      </td>
+                      <td className="py-3 px-4 font-semibold text-white">
+                        {item.parameter}
+                      </td>
+                      <td className="py-3 px-4 text-slate-300">
+                        {item.criteria}
+                      </td>
+                      <td className="py-3 px-4 text-rose-300/90 text-[11px]">
+                        {item.risk}
+                      </td>
+                      <td className="py-3 px-4 text-emerald-400 font-medium text-[11px]">
+                        {item.solution}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -420,6 +564,79 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onOpenQuoteModal }
           </div>
         </div>
       </div>
+
+      {/* Modal with Full Checklist Detail & Checkboxes */}
+      {showChecklistModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl border border-slate-700 bg-slate-900 p-6 sm:p-8 shadow-2xl">
+            <button
+              onClick={() => setShowChecklistModal(false)}
+              className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 cursor-pointer text-lg font-bold"
+            >
+              ✕
+            </button>
+
+            <div className="flex items-center gap-2 text-xs font-mono text-amber-400 uppercase tracking-wider mb-2">
+              <ClipboardCheck className="h-4 w-4" />
+              <span>Лид-магнит завода БЕЛЭКС · Полная версия</span>
+            </div>
+
+            <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-2">
+              Чек-лист инженера: 7 критериев проверки перед монтажом шпунта ПВХ
+            </h3>
+            <p className="text-xs text-slate-300 mb-6">
+              Используйте эту таблицу при выезде на объект или согласовании рабочей документации КР/ГТ.
+            </p>
+
+            <div className="space-y-4">
+              {checklistItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="p-4 rounded-2xl border border-slate-800 bg-slate-950/80 hover:border-slate-700 transition-colors"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-mono font-bold text-amber-400">
+                      {item.stage}
+                    </span>
+                    <span className="text-[10px] uppercase font-mono text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded">
+                      Проверено ТУ BY
+                    </span>
+                  </div>
+                  <h4 className="text-sm font-bold text-white mb-1.5">
+                    {item.parameter}
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-1">
+                    <div>
+                      <span className="text-slate-500 text-[10px] uppercase block">Норматив:</span>
+                      <span className="text-slate-300">{item.criteria}</span>
+                    </div>
+                    <div>
+                      <span className="text-rose-400 text-[10px] uppercase block">Риск нарушения:</span>
+                      <span className="text-slate-400">{item.risk}</span>
+                    </div>
+                    <div>
+                      <span className="text-emerald-400 text-[10px] uppercase block">Рекомендация завода:</span>
+                      <span className="text-emerald-300 font-medium">{item.solution}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-xs text-slate-400">
+                Промокод на скидку 7%: <strong className="text-amber-400 font-mono">BELEX-2026-7</strong>
+              </div>
+              <button
+                onClick={() => setShowChecklistModal(false)}
+                className="w-full sm:w-auto py-2.5 px-6 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl transition-all cursor-pointer"
+              >
+                Закрыть таблицу
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
