@@ -1,9 +1,69 @@
 import React, { useState } from 'react';
 import { TESTIMONIALS, CERTIFICATES, COMPLETED_PROJECTS, Certificate } from '../data/proof';
-import { Star, ShieldCheck, Award, FileCheck2, Building2, CheckCircle2, ChevronRight, ExternalLink } from 'lucide-react';
+import {
+  Star,
+  ShieldCheck,
+  Award,
+  FileCheck2,
+  Building2,
+  CheckCircle2,
+  ChevronRight,
+  PackageCheck,
+  Factory,
+  Sparkles,
+  Layers,
+  TrendingDown,
+  Clock,
+  CheckSquare2,
+  Shield
+} from 'lucide-react';
 
 export const ProofScreen: React.FC = () => {
   const [activeCertificateModal, setActiveCertificateModal] = useState<Certificate | null>(null);
+
+  // 3 facts about the product
+  const productFacts = [
+    {
+      num: '01',
+      title: 'Срок службы 50+ лет и нулевая коррозия',
+      desc: 'Материал 100% устойчив к пресной и соленой воде, ледоходу, ультрафиолету (УФ-стабилизатор) и агрессивным средам с pH от 2 до 12. Не требует покраски и антикоррозийной обработки.',
+      highlight: '50+ лет без коррозии'
+    },
+    {
+      num: '02',
+      title: 'Экономия до 40% по смете проекта',
+      desc: 'Вес полимерного шпунта в 5 раз легче стального Ларсена. За счет этого затраты на логистику, тяжелую технику и вибропогружение снижаются до 40%, а замок исключает протечки.',
+      highlight: 'До 40% дешевле стали'
+    },
+    {
+      num: '03',
+      title: 'Заводская нарезка в точный размер (1-15 м)',
+      desc: 'Изготавливаем сваи нужной длины под конкретный проект заказчика без отходов на объекте. Точность геометрии замков строго по ТУ BY 291244837.001-2019.',
+      highlight: 'Длина до 15 м без остатков'
+    }
+  ];
+
+  // 3 facts about the company
+  const companyFacts = [
+    {
+      num: '01',
+      title: 'Прямой завод-производитель в Беларуси (г. Пинск)',
+      desc: 'Собственные экструзионные мощности полного цикла в Брестской области. Отгрузка со склада завода без наценок посредников и дилеров по ценам от производителя.',
+      highlight: 'Собственный завод в РБ'
+    },
+    {
+      num: '02',
+      title: '140+ реализованных объектов в РБ и СНГ',
+      desc: 'Поставки для крупнейших трестов («Брестводстрой», дорожные управления, агрокомплексы). За все годы эксплуатации — 0 рекламаций по качеству замка и прочности.',
+      highlight: '140+ объектов без нареканий'
+    },
+    {
+      num: '03',
+      title: '25 лет официальной заводской гарантии',
+      desc: 'К каждой партии прилагается паспорт заводского контроля, протоколы испытаний на разрыв замкового соединения и сертификат соответствия нормам ЕАЭС.',
+      highlight: 'Гарантия 25 лет по договору'
+    }
+  ];
 
   return (
     <section id="screen-3" className="relative py-20 bg-slate-950 border-b border-slate-800">
@@ -13,7 +73,7 @@ export const ProofScreen: React.FC = () => {
           <div className="flex items-center gap-2">
             <span className="font-mono text-amber-400">Экран 3</span>
             <span>·</span>
-            <span className="text-slate-400">Третий экран: Social proof (отзывы, рейтинги, сертификаты)</span>
+            <span className="text-slate-400">Третий экран: Блок фактов (50/50) + Social Proof</span>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-slate-400">Надежность подтверждена лабораторными тестами</span>
@@ -23,17 +83,17 @@ export const ProofScreen: React.FC = () => {
         </div>
 
         {/* Header & Rating Banner */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-14">
           <div className="lg:col-span-8">
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">
               <Award className="h-4 w-4" />
-              <span>Доказанная надежность полимерных решений БЕЛЭКС</span>
+              <span>Факты и подтвержденная надежность решений БЕЛЭКС</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
-              Социальное доказательство: реальные отзывы, сертификаты и реализованные объекты
+              Блок фактов и Social Proof: продукция, завод, отзывы и сертификаты
             </h2>
             <p className="mt-3 text-slate-300 text-base leading-relaxed">
-              Материалы БЕЛЭКС успешно эксплуатируются крупнейшими строительными управлениями Республики Беларусь и России в сложных гидрологических условиях.
+              Объективные цифры о материале и заводе-изготовителе, а также реальный опыт применения крупнейшими строительными управлениями Республики Беларусь.
             </p>
           </div>
 
@@ -46,7 +106,7 @@ export const ProofScreen: React.FC = () => {
                 ))}
               </div>
               <div className="text-xs text-slate-400">
-                Средняя оценка: <strong className="text-white">4.9 / 5.0</strong>
+                Средняя оценка клиентов: <strong className="text-white">4.9 / 5.0</strong>
               </div>
             </div>
             <div className="text-right pl-4 border-l border-slate-800">
@@ -56,11 +116,124 @@ export const ProofScreen: React.FC = () => {
           </div>
         </div>
 
+        {/* ======================================================== */}
+        {/* НОВЫЙ ОБЯЗАТЕЛЬНЫЙ ЭЛЕМЕНТ: БЛОК ФАКТОВ (50/50)          */}
+        {/* 3 факта про продукт + 3 факта про компанию               */}
+        {/* ======================================================== */}
+        <div className="mb-20">
+          <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-800/80">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-amber-400"></span>
+                <h3 className="text-xl font-extrabold text-white tracking-tight">
+                  Блок ключевых фактов (50/50)
+                </h3>
+              </div>
+              <p className="text-xs text-slate-400 mt-1">
+                3 подтверждённых факта о продукции и 3 факта о заводе-производителе
+              </p>
+            </div>
+            <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-300 text-xs font-mono font-semibold">
+              Формат: 50% Продукт / 50% Компания
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Левая колонка 50%: 3 Факта о продукте */}
+            <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-slate-900/90 via-slate-900/50 to-slate-950 p-6 sm:p-7 shadow-xl">
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+                <div className="p-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/20">
+                  <PackageCheck className="h-6 w-6" />
+                </div>
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-wider text-amber-400 font-semibold">
+                    50% · Факты о продукции
+                  </div>
+                  <h4 className="text-lg font-bold text-white">
+                    Шпунт ПВХ и полимерные панели
+                  </h4>
+                </div>
+              </div>
+
+              <div className="space-y-5">
+                {productFacts.map((fact, idx) => (
+                  <div
+                    key={idx}
+                    className="group p-4 rounded-xl border border-slate-800/80 bg-slate-950/60 hover:border-amber-400/40 hover:bg-slate-900/40 transition-all"
+                  >
+                    <div className="flex items-start justify-between gap-3 mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs text-amber-400 font-bold px-1.5 py-0.5 rounded bg-amber-400/10">
+                          Факт #{fact.num}
+                        </span>
+                        <h5 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+                          {fact.title}
+                        </h5>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed pl-1">
+                      {fact.desc}
+                    </p>
+                    <div className="mt-2.5 pt-2 border-t border-slate-800/60 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400 font-mono">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                      <span>{fact.highlight}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Правая колонка 50%: 3 Факта о компании */}
+            <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-slate-900/90 via-slate-900/50 to-slate-950 p-6 sm:p-7 shadow-xl">
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+                <div className="p-2.5 rounded-xl bg-blue-400/10 text-blue-400 border border-blue-400/20">
+                  <Factory className="h-6 w-6" />
+                </div>
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-wider text-blue-400 font-semibold">
+                    50% · Факты о компании
+                  </div>
+                  <h4 className="text-lg font-bold text-white">
+                    Завод ООО «БЕЛЭКС» (Беларусь)
+                  </h4>
+                </div>
+              </div>
+
+              <div className="space-y-5">
+                {companyFacts.map((fact, idx) => (
+                  <div
+                    key={idx}
+                    className="group p-4 rounded-xl border border-slate-800/80 bg-slate-950/60 hover:border-blue-400/40 hover:bg-slate-900/40 transition-all"
+                  >
+                    <div className="flex items-start justify-between gap-3 mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs text-blue-400 font-bold px-1.5 py-0.5 rounded bg-blue-400/10">
+                          Факт #{fact.num}
+                        </span>
+                        <h5 className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors">
+                          {fact.title}
+                        </h5>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed pl-1">
+                      {fact.desc}
+                    </p>
+                    <div className="mt-2.5 pt-2 border-t border-slate-800/60 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400 font-mono">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                      <span>{fact.highlight}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* 1. Verified Customer Testimonials */}
         <div className="mb-20">
           <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-            Отзывы главных инженеров и руководителей проектов
+            Social Proof: отзывы главных инженеров и руководителей проектов
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
